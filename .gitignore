@@ -1,0 +1,5 @@
+.vscode
+trading_system/static
+trading_system/media
+trading_system/trading_system/config.py
+trading_system/main/migrations

@@ -1,0 +1,8 @@
+from .user_serializer import UserSerializer
+from .individual_serializer import IndividualSerializer
+from .entity_serializer import EntitySerializer
+from .deal_serializer import DealSerializer, DealFullSerializer
+from .transaction_serializer import TransactionSerializer
+from .news_serializer import NewsSerializer, NewsShortSerializer, NewsPreviewSerializer
+from .news_category_serializer import NewsCategorySerializer
+from .product_serializer import ProductSerializer

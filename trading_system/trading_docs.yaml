@@ -1,0 +1,787 @@
+swagger: '2.0'
+info:
+  title: Snippets API
+  description: Test description
+  termsOfService: https://www.google.com/policies/terms/
+  contact:
+    email: contact@snippets.local
+  license:
+    name: BSD License
+  version: v1
+host: 127.0.0.1:8000
+schemes:
+  - http
+basePath: /api
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+  - Basic: []
+paths:
+  /deal/:
+    post:
+      operationId: deal_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Deal'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Deal'
+      tags:
+        - deal
+    parameters: []
+  /deals/:
+    get:
+      operationId: deals_list
+      description: ''
+      parameters: 
+        - in: query
+          name: status
+          type: string
+          description: '"0":"Заявка",
+                      "1":"Ожидает оплаты",
+                      "3":"Оплачена",
+                      "4":"Исполнена",
+                      "5":"Аннулирована",
+                      "6":"Блокирована"'
+        - in: query
+          name: order_field
+          type: string
+          required: false
+          description: "Поле для сортировки. (product, status,type,cost,volume,summ)"
+        - in: query
+          name: descending
+          type: boolean
+          required: false
+          description: "По убыванию или нет (true/false)"
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DealFull'
+      tags:
+        - deals
+    parameters: []
+
+  /items/:
+    get:
+      operationId: items_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+      tags:
+        - items
+    parameters: []
+
+  /newsPreview/:
+    get:
+      operationId: news_preview_list
+      description: 'News list for main page'
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NewsPreview'
+      tags:
+        - news
+    parameters: []
+
+  /news/:
+    get:
+      operationId: news_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NewsCategory'
+      tags:
+        - news
+    parameters: []
+
+  /newsItem/{id}/:
+    get:
+      operationId: newsItem_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/News'
+      tags:
+        - news
+    parameters:
+      - name: id
+        in: path
+        description: "A unique integer value identifying this \u041D\u043E\u0432\u043E\
+          \u0441\u0442\u044C."
+        required: true
+        type: integer
+  /products/:
+    get:
+      operationId: products_list
+      description: ''
+      parameters:
+        - in: query
+          name: product
+          type: integer
+          required: true
+          description: "ID продукта"
+        - in: query
+          name: descending
+          type: boolean
+          required: false
+          description: "По убыванию или нет"
+        - in: query
+          name: number
+          type: integer
+          required: false
+          description: "Количество возвращаемых значений"
+      responses:
+        '200':
+          description: ''
+      tags:
+        - products
+    parameters: []
+  /token-auth/:
+    post:
+      operationId: token-auth_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/TokenObtainPair'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/TokenObtainPair'
+      tags:
+        - token-auth
+    parameters: []
+  /token-refresh/:
+    post:
+      operationId: token-refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/TokenRefresh'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/TokenRefresh'
+      tags:
+        - token-refresh
+    parameters: []
+  /transactions/:
+    get:
+      operationId: transactions_list
+      description: ''
+      parameters:
+        - in: query
+          name: order_field
+          type: string
+          required: false
+          description: "Поле для сортировки (title, type, summ, date, deal)"
+        - in: query
+          name: descending
+          type: boolean
+          required: false
+          description: "По убыванию или нет"
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+      tags:
+        - transactions
+    parameters: []
+  /user/:
+    post:
+      operationId: user_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+        - user
+    parameters: []
+  /userDeposite/:
+    get:
+      operationId: userDeposite_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - userDeposite
+    parameters: []
+  /userEntity/:
+    post:
+      operationId: userEntity_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Entity'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Entity'
+      tags:
+        - userEntity
+    parameters: []
+  /userIndivid/:
+    post:
+      operationId: userIndivid_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Individual'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Individual'
+      tags:
+        - userIndivid
+    parameters: []
+  /userUpdateEntity/{id}/:
+    put:
+      operationId: userUpdateEntity_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Entity'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Entity'
+      tags:
+        - userUpdateEntity
+    patch:
+      operationId: userUpdateEntity_partial_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Entity'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Entity'
+      tags:
+        - userUpdateEntity
+    parameters:
+      - name: id
+        in: path
+        description: "A unique integer value identifying this \u042E\u0440\u0438\u0434\
+          \u0438\u0447\u0435\u0441\u043A\u043E\u0435 \u043B\u0438\u0446\u043E."
+        required: true
+        type: integer
+  /userUpdateIndivid/{id}/:
+    put:
+      operationId: userUpdateIndivid_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Individual'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Individual'
+      tags:
+        - userUpdateIndivid
+    patch:
+      operationId: userUpdateIndivid_partial_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Individual'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Individual'
+      tags:
+        - userUpdateIndivid
+    parameters:
+      - name: id
+        in: path
+        description: "A unique integer value identifying this \u0424\u0438\u0437\u0438\
+          \u0447\u0435\u0441\u043A\u043E\u0435 \u043B\u0438\u0446\u043E."
+        required: true
+        type: integer
+  /verifCode/:
+    post:
+      operationId: verifCode_create
+      description: ''
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - verifCode
+    parameters: []
+definitions:
+  Deal:
+    required:
+      - product
+      - cost
+      - volume
+      - type
+    type: object
+    properties:
+      product:
+        title: "\u0422\u043E\u0432\u0430\u0440"
+        type: integer
+      cost:
+        title: "\u0426\u0435\u043D\u0430"
+        type: number
+      volume:
+        title: "\u041E\u0431\u044A\u0451\u043C"
+        type: number
+      type:
+        title: "\u0422\u0438\u043F"
+        type: string
+        enum:
+          - "\u041F\u0440\u043E\u0434\u0430\u0436\u0430"
+          - "\u041F\u043E\u043A\u0443\u043F\u043A\u0430"
+  DealFull:
+    required:
+      - status
+      - type
+      - cost
+      - volume
+      - summ
+      - delivery_time
+      - shipment
+      - product
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      status:
+        title: "\u0421\u0442\u0430\u0442\u0443\u0441"
+        type: string
+        enum:
+          - "\u0417\u0430\u044F\u0432\u043A\u0430"
+          - "\u041E\u0436\u0438\u0434\u0430\u0435\u0442 \u043E\u043F\u043B\u0430\u0442\
+            \u044B"
+          - "\u041E\u043F\u043B\u0430\u0447\u0435\u043D\u0430"
+          - "\u0418\u0441\u043F\u043E\u043B\u043D\u0435\u043D\u0430"
+          - "\u0410\u043D\u043D\u0443\u043B\u0438\u0440\u043E\u0432\u0430\u043D\u0430"
+          - "\u0411\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u043D\u0430"
+      type:
+        title: "\u0422\u0438\u043F"
+        type: string
+        enum:
+          - "\u041F\u0440\u043E\u0434\u0430\u0436\u0430"
+          - "\u041F\u043E\u043A\u0443\u043F\u043A\u0430"
+      cost:
+        title: "\u0426\u0435\u043D\u0430"
+        type: number
+      volume:
+        title: "\u041E\u0431\u044A\u0451\u043C"
+        type: number
+      summ:
+        title: "\u0421\u0443\u043C\u043C\u0430"
+        type: number
+      delivery_time:
+        title: "\u0421\u0440\u043E\u043A \u043F\u043E\u0441\u0442\u0430\u0432\u043A\
+          \u0438"
+        type: string
+        maxLength: 50
+        minLength: 1
+      shipment:
+        title: "\u041E\u0442\u0433\u0440\u0443\u0437\u043A\u0430"
+        type: string
+        maxLength: 50
+        minLength: 1
+      product:
+        title: "\u0422\u043E\u0432\u0430\u0440"
+        type: integer
+  Product:
+    required:
+      - name
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: "\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\
+          \u0435"
+        type: string
+        maxLength: 50
+        minLength: 1
+      purchase:
+        title: Purchase
+        type: string
+        readOnly: true
+      sale:
+        title: Sale
+        type: string
+        readOnly: true
+      percent:
+        title: Percent
+        type: string
+        readOnly: true
+  NewsShort:
+    required:
+      - title
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      title:
+        title: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A"
+        type: string
+        maxLength: 50
+        minLength: 1
+      text:
+        title: Text
+        type: string
+        readOnly: true
+      photo:
+        title: "\u0424\u043E\u0442\u043E\u0433\u0440\u0430\u0444\u0438\u044F"
+        type: string
+        readOnly: true
+        format: uri
+  NewsCategory:
+    required:
+      - name
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      news:
+        type: array
+        items:
+          $ref: '#/definitions/NewsShort'
+        readOnly: true
+      name:
+        title: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435"
+        type: string
+        maxLength: 100
+        minLength: 1
+  NewsPreview:
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      title:
+        title: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435"
+        type: string
+        maxLength: 50
+        minLength: 1
+      date:
+        type: string
+        example: "2021-06-08"
+  News:
+    required:
+      - title
+      - text
+      - categories
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      title:
+        title: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A"
+        type: string
+        maxLength: 50
+        minLength: 1
+      text:
+        title: "\u0422\u0435\u043A\u0441\u0442"
+        type: string
+        minLength: 1
+      photo:
+        title: "\u0424\u043E\u0442\u043E\u0433\u0440\u0430\u0444\u0438\u044F"
+        type: string
+        readOnly: true
+        format: uri
+      categories:
+        type: array
+        items:
+          title: "\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438"
+          type: integer
+        uniqueItems: true
+  TokenObtainPair:
+    required:
+      - username
+      - password
+    type: object
+    properties:
+      username:
+        title: Username
+        type: string
+        minLength: 1
+      password:
+        title: Password
+        type: string
+        minLength: 1
+  TokenRefresh:
+    required:
+      - refresh
+    type: object
+    properties:
+      refresh:
+        title: Refresh
+        type: string
+        minLength: 1
+  Transaction:
+    required:
+      - title
+      - type
+      - summ
+      - date
+      - user
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      title:
+        title: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0442\u0440\u0430\
+          \u043D\u0437\u0430\u043A\u0446\u0438\u0438"
+        type: string
+        maxLength: 100
+        minLength: 1
+      type:
+        title: "\u0422\u0438\u043F"
+        type: string
+        enum:
+          - "\u041F\u0440\u0438\u0445\u043E\u0434"
+          - "\u0420\u0430\u0441\u0445\u043E\u0434"
+      summ:
+        title: "\u0421\u0443\u043C\u043C\u0430"
+        type: number
+      date:
+        title: "\u0414\u0430\u0442\u0430"
+        type: string
+        format: date
+      user:
+        title: "\u0410\u043A\u043A\u0430\u0443\u043D\u0442"
+        type: integer
+      deal:
+        title: "\u0421\u0434\u0435\u043B\u043A\u0430"
+        type: integer
+        x-nullable: true
+  User:
+    required:
+      - username
+      - password
+    type: object
+    properties:
+      username:
+        title: "\u0418\u043C\u044F \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\
+          \u0442\u0435\u043B\u044F"
+        description: "\u041E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\
+          \u043E\u0435 \u043F\u043E\u043B\u0435. \u041D\u0435 \u0431\u043E\u043B\u0435\
+          \u0435 150 \u0441\u0438\u043C\u0432\u043E\u043B\u043E\u0432. \u0422\u043E\
+          \u043B\u044C\u043A\u043E \u0431\u0443\u043A\u0432\u044B, \u0446\u0438\u0444\
+          \u0440\u044B \u0438 \u0441\u0438\u043C\u0432\u043E\u043B\u044B @/./+/-/_."
+        type: string
+        pattern: ^[\w.@+-]+$
+        maxLength: 150
+        minLength: 1
+      password:
+        title: "\u041F\u0430\u0440\u043E\u043B\u044C"
+        type: string
+        maxLength: 128
+        minLength: 1
+      verif_code:
+        title: Verif code
+        type: string
+        readOnly: true
+      email:
+        title: "\u0410\u0434\u0440\u0435\u0441 \u044D\u043B\u0435\u043A\u0442\u0440\
+          \u043E\u043D\u043D\u043E\u0439 \u043F\u043E\u0447\u0442\u044B"
+        type: string
+        format: email
+        maxLength: 254
+  Entity:
+    required:
+      - name
+      - mfo
+      - inn
+      - checking_account
+      - bank
+      - address
+      - user_id
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043A\u043E\u043C\
+          \u043F\u0430\u043D\u0438\u0438"
+        type: string
+        maxLength: 255
+        minLength: 1
+      mfo:
+        title: "\u041C\u0424\u041E"
+        type: integer
+        maximum: 4294967295
+        minimum: 0
+      inn:
+        title: "\u0418\u041D\u041D"
+        type: integer
+        maximum: 4294967295
+        minimum: 0
+      checking_account:
+        title: "\u0420\u0430\u0441\u0447\u0435\u0442\u043D\u044B\u0439 \u0441\u0447\
+          \u0435\u0442"
+        type: string
+        maxLength: 50
+        minLength: 1
+      bank:
+        title: "\u0411\u0430\u043D\u043A"
+        type: string
+        maxLength: 100
+        minLength: 1
+      address:
+        title: "\u0410\u0434\u0440\u0435\u0441"
+        type: string
+        maxLength: 255
+        minLength: 1
+      user_id:
+        title: "\u0410\u043A\u043A\u0430\u0443\u043D\u0442"
+        type: integer
+  Individual:
+    required:
+      - inn
+      - passport
+      - address
+      - user_id
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      first_name:
+        title: "\u0418\u043C\u044F"
+        type: string
+        maxLength: 30
+        minLength: 1
+      last_name:
+        title: "\u0424\u0430\u043C\u0438\u043B\u0438\u044F"
+        type: string
+        maxLength: 35
+        minLength: 1
+      birth_date:
+        title: "\u0414\u0430\u0442\u0430 \u0440\u043E\u0436\u0434\u0435\u043D\u0438\
+          \u044F"
+        type: string
+        format: date
+        x-nullable: true
+      inn:
+        title: "\u0418\u041D\u041D"
+        type: integer
+        maximum: 4294967295
+        minimum: 0
+      passport:
+        title: "\u041F\u0430\u0441\u043F\u043E\u0440\u0442"
+        type: string
+        maxLength: 25
+        minLength: 1
+      address:
+        title: "\u0410\u0434\u0440\u0435\u0441"
+        type: string
+        maxLength: 255
+        minLength: 1
+      telegram:
+        title: "\u0422\u0435\u043B\u0435\u0433\u0440\u0430\u043C"
+        type: string
+        maxLength: 25
+        x-nullable: true
+      whats_up:
+        title: "\u0412\u0430\u0442\u0441\u0430\u043F"
+        type: string
+        maxLength: 25
+        x-nullable: true
+      user_id:
+        title: "\u0410\u043A\u043A\u0430\u0443\u043D\u0442"
+        type: integer
